@@ -138,51 +138,52 @@ const Header = () => {
         <Container className="py-1 max-w-4xl flex items-center justify-between">
           {/* Category Dropdown */}
           <Menu as="div" className="relative inline-block text-left">
-            <div>
-              <MenuButton className="uppercase text-[10px] border-1 font-bold flex items-center gap-1 p-1 hover:text-(--color-columbia-blue) duration-200 cursor-pointer">
-                Select Category <FaChevronDown className="" />
-              </MenuButton>
-            </div>
-            <Transition
-              enter="transition ease-out duration-75"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+  <div>
+    <MenuButton className="uppercase text-[10px] border-1 font-bold flex items-center gap-1 p-1 hover:text-(--color-columbia-blue) duration-200 cursor-pointer">
+      Select Category <FaChevronDown className="" />
+    </MenuButton>
+  </div>
+  <Transition
+    enter="transition-all duration-300"
+    enterFrom="opacity-0 scale-y-0"
+    enterTo="opacity-100 scale-y-100"
+    leave="transition-all duration-200"
+    leaveFrom="opacity-100 scale-y-100"
+    leaveTo="opacity-0 scale-y-0"
+  >
+    <MenuItems
+      className="absolute left-1/2 translate-x-[-32%] lg:translate-x-[-50%] mt-1 w-52 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50
+      max-h-110 overflow-y-auto transition-all"
+      style={{ transitionProperty: 'opacity, transform, max-height' }}
+    >
+      {isLoading ? (
+        <MenuItem disabled>
+          <span>Loading...</span>
+        </MenuItem>
+      ) : error ? (
+        <MenuItem disabled>
+          <span>Error loading categories</span>
+        </MenuItem>
+      ) : (
+        categories?.map((item) => (
+          <MenuItem key={item._id}>
+            <Link
+              to={`/category/${item._id}`}
+              className="flex gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              <MenuItems
-                // anchor="bottom end"
-                className="absolute left-1/2 translate-x-[-32%] lg:translate-x-[-50%] mt-1 w-52 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
-              >
-                {isLoading ? (
-                  <MenuItem disabled>
-                    <span>Loading...</span>
-                  </MenuItem>
-                ) : error ? (
-                  <MenuItem disabled>
-                    <span>Error loading categories</span>
-                  </MenuItem>
-                ) : (
-                  categories?.map((item) => (
-                    <MenuItem key={item._id}>
-                      <Link
-                        to={`/category/${item._id}`}
-                        className="flex gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        <img
-                          src={item.image_url || "/placeholder.png"}
-                          alt={item.title}
-                          className="w-6 h-6 rounded-md"
-                        />
-                        {item.title}
-                      </Link>
-                    </MenuItem>
-                  ))
-                )}
-              </MenuItems>
-            </Transition>
-          </Menu>
+              <img
+                src={item.image_url || "/placeholder.png"}
+                alt={item.title}
+                className="w-6 h-6 rounded-md"
+              />
+              {item.title}
+            </Link>
+          </MenuItem>
+        ))
+      )}
+    </MenuItems>
+  </Transition>
+</Menu>
 
 
           {/* Hamburger Button (Only visible on mobile) */}
