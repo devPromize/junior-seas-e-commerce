@@ -4,6 +4,8 @@ import BrandCarousel from "./BrandsCarousel"
 import Footer from './Footer';
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './ScrollToTop';
+import BackToTopButton from './components/BackToTopButton';
+import WhatsAppChatWidget from './components/WhatsAppChatWidget';
 
 const Layout = ({children}:{children:React.ReactNode}) => {
   return (
@@ -13,6 +15,8 @@ const Layout = ({children}:{children:React.ReactNode}) => {
      <BrandCarousel/>
      <ScrollToTop />
      <Footer />
+     <BackToTopButton />
+      <WhatsAppChatWidget />
      <Toaster 
      position='bottom-right'
      reverseOrder={false}

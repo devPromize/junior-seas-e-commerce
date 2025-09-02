@@ -71,8 +71,8 @@ const Perks = () => {
           className="flex flex-col items-center justify-center gap-2 text-center break-words text-xs md:text-sm"
         >
           <img src={perk.icon} alt={perk.title} className={perk.iconSize} />
-          <h1 className="font-bold text-black/75 hover:text-(--color-black) duration-200">{perk.title}</h1>
-          <p className="text-center text-black/75 hover:text-(--color-black) duration-200">{perk.description}</p>
+          <h1 className="font-bold text-black hover:text-(--color-black)/70 duration-200">{perk.title}</h1>
+          <p className="text-center text-black hover:text-(--color-black)/75 duration-200">{perk.description}</p>
         </Link>
       ))}
     </div>

@@ -32,35 +32,33 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(window.scrollY);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   // Use the custom hook to fetch categories
   const { data: categories, isLoading, error } = useCategories();
 
   // Smart sticky header effect
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentY = window.scrollY;
-          if (currentY <= 0) {
-            setShowHeader(true); // Always show at the very top
-          } else if (currentY > lastScrollY.current && currentY < 500) {
-            setShowHeader(false); // Hide when scrolling down and not far yet
-          } else if (currentY > 500) {
-            setShowHeader(true); // Show after scrolling further down
-          } else if (currentY < lastScrollY.current) {
-            setShowHeader(true); // Show when scrolling up
-          }
-          lastScrollY.current = currentY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+useEffect(() => {
+  let lastY = window.scrollY;
+  const handleScroll = () => {
+    // Keep header visible if dropdown or menu is open
+    if (categoryDropdownOpen || menuOpen) {
+      setShowHeader(true);
+      return;
+    }
+    const currentY = window.scrollY;
+    if (currentY <= 0) {
+      setShowHeader(true);
+    } else if (currentY > lastY) {
+      setShowHeader(false);
+    } else if (currentY < lastY) {
+      setShowHeader(true);
+    }
+    lastY = currentY;
+  };
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [categoryDropdownOpen, menuOpen]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -144,7 +142,12 @@ const Header = () => {
         <div className="w-full bg-(--color-navyBlue) text-[var(--color-white)]">
           <Container className="py-1 max-w-4xl flex items-center justify-between">
             {/* Category Dropdown */}
-            <Menu as="div" className="relative inline-block text-left">
+          
+            <Menu 
+            as="div" className="relative inline-block text-left"
+             onMouseEnter={() => setCategoryDropdownOpen(true)}
+  onMouseLeave={() => setCategoryDropdownOpen(false)}
+  onClick={() => setCategoryDropdownOpen((open) => !open)}>
               <div>
                 <MenuButton className="uppercase text-[10px] border-1 font-bold flex items-center gap-1 p-1 hover:text-(--color-columbia-blue) duration-200 cursor-pointer">
                   Select Category <FaChevronDown className="" />
@@ -161,7 +164,9 @@ const Header = () => {
                 <MenuItems
                   className="absolute left-1/2 translate-x-[-32%] lg:translate-x-[-50%] mt-1 w-52 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50
                 max-h-120 overflow-y-auto transition-all"
-                  style={{ transitionProperty: "opacity, transform, max-height" }}
+                  style={{
+                    transitionProperty: "opacity, transform, max-height",
+                  }}
                 >
                   {isLoading ? (
                     <MenuItem disabled>
@@ -172,21 +177,30 @@ const Header = () => {
                       <span>Error loading categories</span>
                     </MenuItem>
                   ) : (
-                    categories?.map((item) => (
-                      <MenuItem key={item._id}>
-                        <Link
-                          to={`/category/${item._id}`}
-                          className="flex gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          <img
-                            src={item.image_url || "/placeholder.png"}
-                            alt={item.title}
-                            className="w-6 h-6 rounded-md"
-                          />
-                          {item.title}
-                        </Link>
-                      </MenuItem>
-                    ))
+                    categories &&
+                    [...categories]
+                      .sort((a, b) =>
+                        (a.title ?? "").localeCompare(
+                          b.title ?? "",
+                          undefined,
+                          { sensitivity: "base" }
+                        )
+                      )
+                      .map((item) => (
+                        <MenuItem key={item._id}>
+                          <Link
+                            to={`/category/${item._id}`}
+                            className="flex gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            <img
+                              src={item.image_url || "/placeholder.png"}
+                              alt={item.title}
+                              className="w-6 h-6 rounded-md"
+                            />
+                            {item.title}
+                          </Link>
+                        </MenuItem>
+                      ))
                   )}
                 </MenuItems>
               </Transition>
@@ -268,19 +282,26 @@ const Header = () => {
 
         {/* Mobile Navigation Links */}
         <div className="flex flex-col ">
-          {headerNavLinks.map(({ title, to }) => (
-            <NavLink
-              key={title}
-              to={to}
-              onClick={() => setMenuOpen(false)}
-              className="w-full uppercase text-[12px] font-semibold hover:bg-(--color-skyBlue)
-                duration-300 cursor-pointer "
-            >
-              <p className="pl-5 py-4 text-(--color-white)">{title}</p>
-              <div className="h-[0.1px] bg-(--color-skyBlue)/50  "></div>
-            </NavLink>
-          ))}
-        </div>
+  {headerNavLinks.map(({ title, to }) => (
+    <NavLink
+      key={title}
+      to={to}
+      end
+      className={({ isActive }) =>
+        isActive
+          ? "w-full uppercase text-[12px] font-semibold bg-[var(--color-skyBlue)] text-[var(--color-white)] duration-300 cursor-pointer"
+          : "w-full uppercase text-[12px] font-semibold hover:bg-[var(--color-skyBlue)] duration-300 cursor-pointer"
+      }
+      onClick={() => {
+        // Delay closing the menu to allow the active state to update
+        setTimeout(() => setMenuOpen(false), 100);
+      }}
+    >
+      <p className="pl-5 py-4">{title}</p>
+      <div className="h-[0.1px] bg-[var(--color-skyBlue)]/50"></div>
+    </NavLink>
+  ))}
+</div>
       </div>
     </>
   );

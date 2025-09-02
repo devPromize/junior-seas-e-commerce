@@ -1,3 +1,4 @@
+// import { motion } from "framer-motion"; //Wrong !! REMOVE.
 import ProductHighlightBlock from "./ProductHighlightBlock";
 import HomeFeatureImgs from "./HomeFeatureImgs";
 import {
@@ -30,11 +31,14 @@ const Highlights = () => {
       {highlightSections.map((item, index) => {
         if (item.type === "section") {
           return (
-            <ProductHighlightBlock
+        
+              <ProductHighlightBlock
               key={item.key}
               sectionKey={item.key ?? "default-key"}
               title={item.title ?? "Default Title"}
             />
+           
+            
           );
         } else if (item.type === "image") {
           return (
@@ -89,4 +93,6 @@ const Highlights = () => {
   );
 };
 
-export default Highlights;
+export default Highlights
+
+
