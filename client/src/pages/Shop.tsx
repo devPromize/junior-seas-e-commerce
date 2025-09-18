@@ -1,262 +1,229 @@
-// // src/pages/ShopPage.tsx
-// import { useState, useEffect } from "react";
-// import { useProducts } from "../hooks/useProducts";
-// import ProductCard from "../ui/components/ProductCard";
-// import FilterSidebar from "../ui/components/FilterSidebar";
-// import SortDropdown from "../ui/components/SortDropdown";
-
-// interface FilterState {
-//   priceRange: [number, number];
-//   category: string;
-//   ram?: string;
-//   rom?: string;
-// }
-
-// export default function ShopPage() {
-//   const [filters, setFilters] = useState<FilterState>({
-//     priceRange: [0, 10000],
-//     category: "",
-//   });
-
-//   const [sortBy, setSortBy] = useState<string>("latest");
-//   const { data: products = [], isLoading } = useProducts(filters);
-
-//   return (
-//     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
-//       <FilterSidebar filters={filters} setFilters={setFilters} />
-
-//       <div className="col-span-3">
-//         <div className="flex justify-between items-center mb-4">
-//           <h2 className="text-xl font-semibold">All Products</h2>
-//           <SortDropdown sortBy={sortBy} setSortBy={setSortBy} />
-//         </div>
-
-//         {isLoading ? (
-//           <p>Loading products...</p>
-//         ) : products.length === 0 ? (
-//           <p>No products found.</p>
-//         ) : (
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//             {products.map((product) => (
-//               <ProductCard key={product._id} product={product} />
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// import { useState } from "react";
-// import { useProducts } from "../hooks/useProducts";
-// import { Product } from "../../type";
-// import FilterSidebar from "../ui/components/FilterSidebar";
-// import SortDropdown from "../ui/components/SortDropdown";
-// import ProductCard from "../ui/components/ProductCard";
-
-// interface FiltersState {
-//   category: string;
-//   priceRange: [number, number];
-//   ram: string;
-//   rom: string;
-//   sort: string;
-// }
-
-// const Shop = () => {
-//   const [filters, setFilters] = useState<FiltersState>({
-//     category: "",
-//     priceRange: [0, 1000],
-//     ram: "",
-//     rom: "",
-//     sort: "latest",
-//   });
-
-//   const { data: products = [], isLoading } = useProducts(filters);
-
-//   const handleSortChange = (sortValue: string) => {
-//     setFilters((prev) => ({ ...prev, sort: sortValue }));
-//   };
-
-//   const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-//     setFilters((prev) => ({ ...prev, ...newFilters }));
-//   };
-
-//   return (
-//     <div className="flex gap-6">
-//       {/* Sidebar */}
-//       <FilterSidebar filters={filters} onFilterChange={handleFilterChange} />
-
-//       {/* Main content */}
-//       <div className="flex-1">
-//         <div className="flex justify-between items-center mb-4">
-//           <h2 className="text-xl font-semibold">All Products</h2>
-//           <SortDropdown sortBy={filters.sort} onSortChange={handleSortChange} />
-//         </div>
-
-//         {isLoading ? (
-//           <p>Loading products...</p>
-//         ) : (
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//             {products.map((product: Product) => (
-//               <ProductCard key={product._id} product={product} />
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Shop;
-
-
-
-
-
-
-
-
-
-// import { useState } from "react";
-// import { useProducts } from "../hooks/useProducts";
-// import { Product } from "../../type";
-// import FilterSidebar from "../ui/components/FilterSidebar";
-// import SortDropdown from "../ui/components/SortDropdown";
-// import ProductCard from "../ui/components/ProductCard";
-// import Pagination from "../ui/components/Pagination";
-
-// const Shop = () => {
-//   const [filters, setFilters] = useState({
-//     category: "",
-//     priceRange: [0, 1000] as [number, number],
-//     ram: "",
-//     rom: "",
-//     sort: "latest",
-//   });
-
-//   const [page, setPage] = useState(1);
-//   const { data, isLoading } = useProducts({ ...filters, page });
-//   const products = data?.products || [];
-//   const totalPages = data?.totalPages || 1;
-
-//   const handleSortChange = (sortValue: string) => {
-//     setFilters((prev) => ({ ...prev, sort: sortValue }));
-//   };
-
-//   const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-//     setFilters((prev) => ({ ...prev, ...newFilters }));
-//     setPage(1); // Reset to first page on filter change
-//   };
-
-//   const handlePageChange = (newPage: number) => {
-//     setPage(newPage);
-//   };
-
-//   return (
-//     <div className="flex gap-6">
-//       {/* Sidebar */}
-//       <FilterSidebar filters={filters} onFilterChange={handleFilterChange} />
-
-//       {/* Main content */}
-//       <div className="flex-1">
-//         <div className="flex justify-between items-center mb-4">
-//           <h2 className="text-xl font-semibold">All Products</h2>
-//           <SortDropdown sortBy={filters.sort} onSortChange={handleSortChange} />
-//         </div>
-
-//         {isLoading ? (
-//           <p>Loading products...</p>
-//         ) : (
-//           <>
-//             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//               {products.map((product: Product) => (
-//                 <ProductCard key={product._id} product={product} />
-//               ))}
-//             </div>
-//             <div className="mt-6 flex justify-center">
-//               <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Shop;
-
-
-
-import { useState } from "react";
+// src/pages/ShopPage.tsx
+import React, { useEffect, useMemo, useState } from "react";
 import { useProducts } from "../hooks/useProducts";
-import { Product } from "../../type";
-import FilterSidebar from "../ui/components/FilterSidebar";
-import SortDropdown from "../ui/components/SortDropdown";
 import ProductCard from "../ui/components/ProductCard";
-import Pagination from "../ui/components/Pagination";
 
-const Shop = () => {
-  const [filters, setFilters] = useState({
-    category: "",
-    priceRange: [0, 1000] as [number, number],
-    ram: "",
-    rom: "",
-    sort: "latest",
-    page: 1,
-    limit: 9,
-  });
+const ShopPage: React.FC = () => {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(12);
+  const [category, setCategory] = useState("");
+  const [ram, setRam] = useState("");
+  const [rom, setRom] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
+  const [sortSelection, setSortSelection] = useState("created_at_desc"); // UI string
 
-  const { data, isLoading } = useProducts(filters);
-  const products: Product[] = data?.products || [];
-  const totalPages = data?.totalPages || 1;
+  // map UI selection to API params:
+  const { sortBy, sortOrder } = useMemo(() => {
+    if (sortSelection === "price_asc") return { sortBy: "price", sortOrder: "asc" as const };
+    if (sortSelection === "price_desc") return { sortBy: "price", sortOrder: "desc" as const };
+    // created_at_descent = newest first
+    return { sortBy: "created_at", sortOrder: "desc" as const };
+  }, [sortSelection]);
 
-  const handleSortChange = (sortValue: string) => {
-    setFilters((prev) => ({ ...prev, sort: sortValue, page: 1 }));
-  };
+  // reset page when filters/sort change
+  useEffect(() => setPage(1), [category, ram, rom, priceRange, sortSelection]);
 
-  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-    setFilters((prev) => ({ ...prev, ...newFilters, page: 1 }));
-  };
+  const params = useMemo(
+    () => ({
+      page,
+      limit,
+      category: category || undefined,
+      ram: ram || undefined,
+      rom: rom || undefined,
+      price_min: priceRange[0],
+      price_max: priceRange[1],
+      sortBy,
+      sortOrder,
+    }),
+    [page, limit, category, ram, rom, priceRange, sortBy, sortOrder]
+  );
 
-  const handlePageChange = (page: number) => {
-    setFilters((prev) => ({ ...prev, page }));
-  };
+  const { data, isLoading, isError, error, refetch } = useProducts(params);
+  // data shape from your backend: { products: [...], total, page, limit, totalPages }
+  const products = data?.products ?? [];
+  const totalPages = data?.totalPages ?? 1;
 
-
-  
   return (
-    <div className="flex gap-6">
-      {/* Sidebar */}
-      <FilterSidebar filters={filters} onFilterChange={handleFilterChange} />
+    <div className="px-4 md:px-8 py-6">
+      <div className="flex flex-col md:flex-row gap-6">
+        <aside className="w-full md:w-1/4 border rounded-xl p-4">
+          <h2 className="text-lg font-semibold mb-4">Filters</h2>
+          <div className="mb-4">
+            <label className="block font-medium">Category</label>
+            <select className="w-full mt-1 border rounded p-2" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">All</option>
+              <option value="Phones">Phones</option>
+              <option value="Chargers">Chargers</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Speakers">Speakers</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block font-medium">RAM</label>
+            <select className="w-full mt-1 border rounded p-2" value={ram} onChange={(e) => setRam(e.target.value)}>
+              <option value="">Any</option>
+              <option value="4GB">4GB</option>
+              <option value="6GB">6GB</option>
+              <option value="8GB">8GB</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block font-medium">ROM</label>
+            <select className="w-full mt-1 border rounded p-2" value={rom} onChange={(e) => setRom(e.target.value)}>
+              <option value="">Any</option>
+              <option value="64GB">64GB</option>
+              <option value="128GB">128GB</option>
+              <option value="256GB">256GB</option>
+            </select>
+          </div>
+          <div>
+            <label className="block font-medium">Max Price</label>
+            <input type="range" min={0} max={1000000} value={priceRange[1]} onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])} />
+            <p>₦{priceRange[0].toLocaleString()} - ₦{priceRange[1].toLocaleString()}</p>
+          </div>
+        </aside>
 
-      {/* Main content */}
-      <div className="flex-1">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">All Products</h2>
-          <SortDropdown sortBy={filters.sort} onSortChange={handleSortChange} />
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Shop</h2>
+            <select className="border rounded p-2" value={sortSelection} onChange={(e) => setSortSelection(e.target.value)}>
+              <option value="created_at_desc">Newest</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
+          </div>
+
+          {isLoading && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {[...Array(limit)].map((_, i) => <div key={i} className="bg-gray-200 h-48 rounded-xl animate-pulse" />)}
+            </div>
+          )}
+
+          {isError && (
+            <div className="text-center text-red-500">
+              <p>Failed to load products: {(error as any)?.message ?? "Unknown error"}</p>
+              <div className="mt-3">
+                <button onClick={() => refetch()} className="px-4 py-2 bg-blue-600 text-white rounded">Retry</button>
+              </div>
+            </div>
+          )}
+
+          {!isLoading && !isError && (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {products.map((product: any) => <ProductCard key={product.id ?? product._id} product={product} />)}
+              </div>
+
+              <div className="flex justify-center gap-2 mt-6">
+                <button disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-3 py-1 border rounded disabled:opacity-50">Prev</button>
+                <span>Page {page} of {totalPages}</span>
+                <button disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="px-3 py-1 border rounded disabled:opacity-50">Next</button>
+              </div>
+            </>
+          )}
         </div>
-
-        {isLoading ? (
-          <p>Loading products...</p>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {products.map((product: Product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-            <div className="mt-8">
-              <Pagination
-                currentPage={filters.page}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          </>
-        )}
       </div>
     </div>
   );
 };
 
-export default Shop;
+export default ShopPage;
+
+
+
+
+
+
+
+
+
+
+
+// import { useState } from "react";
+// import { useProducts } from "../hooks/useProducts";
+// import SortDropdown from "../ui/components/SortDropdown";
+// import ProductCard from "../ui/components/ProductCard";
+// import FilterSidebar from "../ui/components/FilterSidebar";
+// import Pagination from "../ui/components/Pagination";
+
+// export default function ShopPage() {
+//   const [page, setPage] = useState(1);
+//   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+//   const [priceRange, setPriceRange] = useState<[number, number] | undefined>();
+//   const [sort, setSort] = useState<{ sortOrder: string }>({ sortOrder: "" });
+
+//   // ✅ Map sort.sortOrder to actual backend format
+//   let sortBy = "created_at"; // default sorting
+//   let sortOrder: "asc" | "desc" | undefined = undefined;
+
+//   if (sort.sortOrder === "low-to-high") {
+//     sortBy = "price";
+//     sortOrder = "asc";
+//   } else if (sort.sortOrder === "high-to-low") {
+//     sortBy = "price";
+//     sortOrder = "desc";
+//   } else if (sort.sortOrder === "latest") {
+//     sortBy = "created_at";
+//     sortOrder = "desc";
+//   } else if (sort.sortOrder === "popularity") {
+//     sortBy = "views"; // or your popularity metric
+//     sortOrder = "desc";
+//   }
+
+//   const params = {
+//     page,
+//     limit: 12,
+//     category: selectedCategory,
+//     priceRange,
+//     sortBy,
+//     sortOrder, // ✅ Correct type for backend
+//   };
+
+//   const { data, isLoading, isError } = useProducts(params);
+
+//   return (
+//     <div className="flex gap-6">
+//       {/* Sidebar */}
+//       <FilterSidebar
+//         onCategoryChange={(cat) => setSelectedCategory(cat)}
+//         onPriceChange={(range) => setPriceRange(range)}
+//       />
+
+//       <div className="flex-1">
+//         {/* Sort Dropdown */}
+//         <div className="flex justify-end mb-4">
+//           <SortDropdown
+//             value={sort.sortOrder}
+//             onChange={(value) => setSort({ sortOrder: value })}
+//           />
+//         </div>
+
+//         {/* Products Grid */}
+//         {isLoading ? (
+//           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+//             {[...Array(12)].map((_, i) => (
+//               <div key={i} className="bg-gray-200 h-64 animate-pulse rounded-lg" />
+//             ))}
+//           </div>
+//         ) : isError ? (
+//           <p className="text-red-500">Failed to load products</p>
+//         ) : (
+//           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+//             {data?.products?.map((product) => (
+//               <ProductCard key={product.id} product={product} />
+//             ))}
+//           </div>
+//         )}
+
+//         {/* Pagination */}
+//         <div className="mt-6">
+//           <Pagination
+//             currentPage={page}
+//             totalPages={data?.totalPages || 1}
+//             onPageChange={setPage}
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

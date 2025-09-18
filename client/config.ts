@@ -7,7 +7,7 @@ interface Config {
 const checkConfig = (mode: string): Config => {
   switch (mode) {
     case "development":
-      return { baseUrl: "http://localhost:5000/api" }; // local dev server
+      return { baseUrl: "http://localhost:5000/api" }; // local dev server http://192.168.0.157:5000/api for network and mobile testing
     case "staging":
       return { baseUrl: "https://staging-api.example.com" };
     case "production":

@@ -5,6 +5,7 @@ import heroCarouselRoute from "./routes/heroCarouselRoute.js";
 import feedCarouselRoute from "./routes/feedCarouselRoute.js"
 import categoryRoute from "./routes/categoryRoute.js";
 import highlightsRoute from "./routes/highlightsRoute.js";
+import productsRoute from './routes/productsRoute.js';
 const app = express();
 
 app.use(cors());
@@ -13,7 +14,9 @@ app.use(express.json());
 app.use("/api/hero-carousel", heroCarouselRoute);
 app.use("/api/feed-carousel", feedCarouselRoute); // All feed carousel routes will be prefixed with /api
 app.use("/api/categories", categoryRoute);
-app.use("/api/products", highlightsRoute);
+app.use("/api/products", productsRoute);
+app.use("/api/highlights", highlightsRoute);
+
 
 
 app.get('/', (_req, res) => {

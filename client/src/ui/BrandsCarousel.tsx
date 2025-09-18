@@ -93,7 +93,7 @@ const BrandCarousel = () => {
             <img
               src={brand.logo}
               alt={brand.name}
-              className="w-50 h-auto object-contain cursor-pointer grayscale hover:grayscale-0 hover:scale-120 transition-all duration-500 "
+              className="w-50 h-auto object-contain cursor-pointer lg:grayscale hover:grayscale-0 hover:scale-120 transition-all duration-500 sm:grayscale-0"
               onClick={() => handleBrandClick(brand.name)}
             />
           </SwiperSlide>

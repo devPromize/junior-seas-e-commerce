@@ -29,7 +29,7 @@ const HeroCarousel = () => {
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
         pagination={{ clickable: true }}
         navigation={true}
@@ -45,7 +45,7 @@ const HeroCarousel = () => {
                   alt={slide.title}
                   className="w-full h-full object-cover sm:object-right "
                 />
-                <div className="absolute bottom-4 left-4 text-white bg-black bg-opacity-50 p-4 rounded-lg max-w-md">
+                <div className="absolute bottom-4 left-4 text-white bg-black/80 p-4 rounded-lg max-w-md">
                   <h2 className="text-lg font-bold">{slide.title}</h2>
                   <p className="text-sm">{slide.description}</p>
                 </div>

@@ -140,7 +140,7 @@ const FeedCarousel = () => {
         grabCursor={true}
         centeredSlides={true}
         loop={true}
-        autoplay={{ delay: 3500, disableOnInteraction: false }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         coverflowEffect={{
           rotate: 30,

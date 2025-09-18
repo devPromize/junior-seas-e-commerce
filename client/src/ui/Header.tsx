@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { jsLogo } from "../assets";
 import { IoClose, IoSearchOutline } from "react-icons/io5";
 import { RiUserFill } from "react-icons/ri";
@@ -31,34 +31,33 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
-  const lastScrollY = useRef(window.scrollY);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   // Use the custom hook to fetch categories
   const { data: categories, isLoading, error } = useCategories();
 
   // Smart sticky header effect
-useEffect(() => {
-  let lastY = window.scrollY;
-  const handleScroll = () => {
-    // Keep header visible if dropdown or menu is open
-    if (categoryDropdownOpen || menuOpen) {
-      setShowHeader(true);
-      return;
-    }
-    const currentY = window.scrollY;
-    if (currentY <= 0) {
-      setShowHeader(true);
-    } else if (currentY > lastY) {
-      setShowHeader(false);
-    } else if (currentY < lastY) {
-      setShowHeader(true);
-    }
-    lastY = currentY;
-  };
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [categoryDropdownOpen, menuOpen]);
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const handleScroll = () => {
+      // Keep header visible if dropdown or menu is open
+      if (categoryDropdownOpen || menuOpen) {
+        setShowHeader(true);
+        return;
+      }
+      const currentY = window.scrollY;
+      if (currentY <= 0) {
+        setShowHeader(true);
+      } else if (currentY > lastY) {
+        setShowHeader(false);
+      } else if (currentY < lastY) {
+        setShowHeader(true);
+      }
+      lastY = currentY;
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [categoryDropdownOpen, menuOpen]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -102,7 +101,7 @@ useEffect(() => {
               placeholder="Search Products"
               className="w-full flex-1 rounded-sm text-gray-900 text-lg placeholder:text-base 
             shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-            focus:ring-2 focus:ring-[var(--color-navyBlue)] sm:text-sm px-4 py-2"
+            focus:ring-0  focus:outline-(--color-skyBlue) sm:text-sm px-4 py-2"
             />
             {searchText ? (
               <IoClose
@@ -142,12 +141,14 @@ useEffect(() => {
         <div className="w-full bg-(--color-navyBlue) text-[var(--color-white)]">
           <Container className="py-1 max-w-4xl flex items-center justify-between">
             {/* Category Dropdown */}
-          
-            <Menu 
-            as="div" className="relative inline-block text-left"
-             onMouseEnter={() => setCategoryDropdownOpen(true)}
-  onMouseLeave={() => setCategoryDropdownOpen(false)}
-  onClick={() => setCategoryDropdownOpen((open) => !open)}>
+
+            <Menu
+              as="div"
+              className="relative inline-block text-left"
+              onMouseEnter={() => setCategoryDropdownOpen(true)}
+              onMouseLeave={() => setCategoryDropdownOpen(false)}
+              onClick={() => setCategoryDropdownOpen((open) => !open)}
+            >
               <div>
                 <MenuButton className="uppercase text-[10px] border-1 font-bold flex items-center gap-1 p-1 hover:text-(--color-columbia-blue) duration-200 cursor-pointer">
                   Select Category <FaChevronDown className="" />
@@ -282,26 +283,26 @@ useEffect(() => {
 
         {/* Mobile Navigation Links */}
         <div className="flex flex-col ">
-  {headerNavLinks.map(({ title, to }) => (
-    <NavLink
-      key={title}
-      to={to}
-      end
-      className={({ isActive }) =>
-        isActive
-          ? "w-full uppercase text-[12px] font-semibold bg-[var(--color-skyBlue)] text-[var(--color-white)] duration-300 cursor-pointer"
-          : "w-full uppercase text-[12px] font-semibold hover:bg-[var(--color-skyBlue)] duration-300 cursor-pointer"
-      }
-      onClick={() => {
-        // Delay closing the menu to allow the active state to update
-        setTimeout(() => setMenuOpen(false), 100);
-      }}
-    >
-      <p className="pl-5 py-4">{title}</p>
-      <div className="h-[0.1px] bg-[var(--color-skyBlue)]/50"></div>
-    </NavLink>
-  ))}
-</div>
+          {headerNavLinks.map(({ title, to }) => (
+            <NavLink
+              key={title}
+              to={to}
+              end
+              className={({ isActive }) =>
+                isActive
+                  ? "w-full uppercase text-[12px] font-semibold bg-[var(--color-skyBlue)] text-[var(--color-white)] duration-300 cursor-pointer"
+                  : "w-full uppercase text-[12px] font-semibold hover:bg-[var(--color-skyBlue)] duration-300 cursor-pointer"
+              }
+              onClick={() => {
+                // Delay closing the menu to allow the active state to update
+                setTimeout(() => setMenuOpen(false), 100);
+              }}
+            >
+              <p className="pl-5 py-4">{title}</p>
+              <div className="h-[0.6px] bg-[var(--color-skyBlue)]/50"></div>
+            </NavLink>
+          ))}
+        </div>
       </div>
     </>
   );
